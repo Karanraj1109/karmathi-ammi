@@ -3,153 +3,180 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f3eee4">
-  <meta name="description" content="Undangan keluarga untuk upacara Karumathi — sebuah pertemuan dalam doa, kenangan, dan kasih.">
-  <title>Karumathi — In Loving Memory</title>
+  <meta name="theme-color" content="#eeeadf">
+  <meta name="description" content="Undangan keluarga untuk upacara Karumathi — berkumpul dalam doa, kenangan, dan kasih.">
+  <title>Karumathi — A Life Remembered</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
-  <div class="page-grain" aria-hidden="true"></div>
-  <div class="scroll-progress" aria-hidden="true"><span id="progressBar"></span></div>
+  <div class="paper-grain" aria-hidden="true"></div>
+  <div class="reading-line" aria-hidden="true"><span id="readingProgress"></span></div>
 
-  <!-- Intro overlay -->
-  <section class="intro" id="intro" aria-label="Pembuka undangan">
-    <div class="intro-frame">
-      <div class="intro-topline"><span>UNDANGAN KELUARGA</span><span>EST. IN REMEMBRANCE</span></div>
-      <div class="intro-center">
-        <div class="kolam-mark" aria-hidden="true">
-          <svg viewBox="0 0 220 220" role="img">
-            <g fill="none" stroke="currentColor" stroke-width=".9">
-              <circle cx="110" cy="110" r="81"/><circle cx="110" cy="110" r="68"/><circle cx="110" cy="110" r="48"/>
-              <path d="M110 19 C125 45 175 45 201 110 C175 175 125 175 110 201 C95 175 45 175 19 110 C45 45 95 45 110 19Z"/>
-              <path d="M110 31 C136 58 162 84 189 110 C162 136 136 162 110 189 C84 162 58 136 31 110 C58 84 84 58 110 31Z"/>
-              <path d="M110 48 C126 70 150 94 172 110 C150 126 126 150 110 172 C94 150 70 126 48 110 C70 94 94 70 110 48Z"/>
-              <path d="M110 62 C122 83 137 98 158 110 C137 122 122 137 110 158 C98 137 83 122 62 110 C83 98 98 83 110 62Z"/>
-              <path d="M110 19V201 M19 110H201 M45 45L175 175 M175 45L45 175" opacity=".55"/>
-            </g>
-            <g fill="currentColor"><circle cx="110" cy="110" r="3.2"/><circle cx="110" cy="23" r="2"/><circle cx="197" cy="110" r="2"/><circle cx="110" cy="197" r="2"/><circle cx="23" cy="110" r="2"/></g>
-          </svg>
-        </div>
-        <p class="eyebrow">A FAMILY GATHERING IN PRAYER</p>
-        <p class="intro-kicker">IN LOVING MEMORY OF</p>
-        <h1 id="introName">[ Nama Nenek ]</h1>
-        <p class="intro-sub">A remembrance held in love, prayer, and gratitude.</p>
-        <button class="enter-button" id="enterButton" type="button"><span>Buka undangan</span><i aria-hidden="true">↗</i></button>
-        <button class="skip-button" id="skipButton" type="button">Lewati pembuka</button>
-      </div>
-      <div class="intro-bottomline"><span>KARUMATHI CEREMONY</span><span>OM SHANTI</span></div>
+  <section class="entry" id="entry" aria-label="Pembuka undangan">
+    <div class="entry-top"><span>AN INVITATION FROM THE FAMILY</span><span>IN REMEMBRANCE · WITH LOVE</span></div>
+    <div class="entry-art" aria-hidden="true">
+      <svg viewBox="0 0 520 520" class="entry-kolam">
+        <g fill="none" stroke="currentColor" stroke-width=".8">
+          <circle cx="260" cy="260" r="220"/><circle cx="260" cy="260" r="195"/><circle cx="260" cy="260" r="150"/><circle cx="260" cy="260" r="105"/>
+          <path d="M260 40 C302 112 408 112 480 260 C408 408 302 408 260 480 C218 408 112 408 40 260 C112 112 218 112 260 40Z"/>
+          <path d="M260 78 C319 143 377 201 442 260 C377 319 319 377 260 442 C201 377 143 319 78 260 C143 201 201 143 260 78Z"/>
+          <path d="M260 111 C303 169 351 217 409 260 C351 303 303 351 260 409 C217 351 169 303 111 260 C169 217 217 169 260 111Z"/>
+          <path d="M260 40V480M40 260H480M104 104L416 416M416 104L104 416" opacity=".45"/>
+          <path d="M260 145 C290 191 329 230 375 260 C329 290 290 329 260 375 C230 329 191 290 145 260 C191 230 230 191 260 145Z"/>
+          <path d="M260 183 C282 216 304 238 337 260 C304 282 282 304 260 337 C238 304 216 282 183 260 C216 238 238 216 260 183Z"/>
+        </g>
+        <g fill="currentColor"><circle cx="260" cy="260" r="4"/><circle cx="260" cy="44" r="2.6"/><circle cx="476" cy="260" r="2.6"/><circle cx="260" cy="476" r="2.6"/><circle cx="44" cy="260" r="2.6"/></g>
+      </svg>
+      <span class="entry-orbit entry-orbit-one"></span><span class="entry-orbit entry-orbit-two"></span>
     </div>
-    <div class="intro-corner corner-tl" aria-hidden="true"></div><div class="intro-corner corner-br" aria-hidden="true"></div>
+    <div class="entry-content">
+      <p class="entry-kicker"><span class="tiny-rule"></span> KARUMATHI · FAMILY REMEMBRANCE</p>
+      <h1>A life<br><em>held in love.</em></h1>
+      <div class="entry-lower">
+        <p>In honour of<br><strong id="entryName">[ Nama Nenek ]</strong><br><span>A gathering of remembrance and prayer.</span></p>
+        <button class="entry-open" id="openInvitation" type="button"><span>Masuk ke undangan</span><b aria-hidden="true">↗</b></button>
+      </div>
+    </div>
+    <div class="entry-rail"><span>THE LOVE REMAINS</span><span>01 — 06</span></div>
+    <div class="entry-foot"><span>SCROLL IS A JOURNEY · OPEN TO BEGIN</span><span>OM SHANTI</span></div>
   </section>
 
-  <main id="mainContent" class="site-shell" aria-hidden="true">
-    <header class="site-header">
-      <a class="wordmark" href="#top" aria-label="Karumathi, kembali ke atas"><span class="wordmark-symbol">✳</span><span>KARUMATHI <small>FAMILY REMEMBRANCE</small></span></a>
-      <nav class="main-nav" aria-label="Navigasi utama">
-        <a href="#meaning">Makna</a><a href="#invitation">Undangan</a><a href="#details">Informasi</a>
-      </nav>
-      <button class="sound-button" id="soundButton" type="button" aria-label="Putar musik" hidden><span class="sound-bars"><i></i><i></i><i></i><i></i></span><span id="soundLabel">Suara</span></button>
+  <main class="site" id="site" aria-hidden="true">
+    <header class="masthead">
+      <a class="brand" href="#home" aria-label="Karumathi, ke awal"><span class="brand-mark">K.</span><span class="brand-name">KARUMATHI<small>FAMILY REMEMBRANCE</small></span></a>
+      <nav class="navigation" aria-label="Navigasi"><a href="#meaning">Makna</a><a href="#letter">Undangan</a><a href="#gathering">Waktu & tempat</a></nav>
+      <button class="audio-toggle" id="audioToggle" type="button" hidden aria-label="Putar musik"><span class="audio-bars"><i></i><i></i><i></i><i></i></span><span id="audioLabel">AUDIO OFF</span></button>
     </header>
 
-    <section class="hero section-pad" id="top">
+    <section class="hero" id="home">
+      <div class="hero-side-index"><span>01</span><i></i><span>REMEMBERING</span></div>
       <div class="hero-copy reveal">
-        <p class="eyebrow"><span class="eyebrow-rule"></span> A DAY OF PRAYER & REMEMBRANCE</p>
-        <p class="hero-pretitle">In loving memory of</p>
+        <p class="eyebrow"><span class="eyebrow-dot"></span> A DAY OF PRAYER & REMEMBRANCE</p>
+        <p class="hero-intro">In loving memory of</p>
         <h2 id="heroName">[ Nama Nenek ]</h2>
-        <p class="hero-description">Some presences never leave us. They live on in the stories we tell, the values we carry, and the love that keeps a family close.</p>
-        <div class="hero-meta"><span class="meta-line"></span><span>Karumathi · Undangan keluarga</span></div>
-        <a class="text-link" href="#invitation">Baca undangan <span aria-hidden="true">↓</span></a>
+        <p class="hero-statement">A life may leave our sight,<br><em>never the stories it leaves behind.</em></p>
+        <div class="hero-bottomline"><span class="fine-rule"></span><span>WITH LOVE · WITH GRATITUDE · ALWAYS</span></div>
       </div>
-      <div class="hero-visual reveal reveal-delay">
-        <div class="hero-arch">
-          <div class="arch-inner">
-            <img id="memorialPhoto" src="assets/nenek.jpg" alt="Foto mendiang nenek">
-            <div class="photo-placeholder" id="photoPlaceholder"><span class="placeholder-flower">✳</span><span>RUANG FOTO KENANGAN</span><small>Tambahkan foto keluarga di assets/nenek.jpg</small></div>
+      <div class="portrait-stage reveal reveal-late">
+        <div class="portrait-backdrop"></div>
+        <div class="portrait-frame">
+          <img id="memorialPhoto" src="assets/nenek.jpg" alt="Foto kenangan mendiang nenek">
+          <div class="portrait-placeholder" id="portraitPlaceholder">
+            <svg viewBox="0 0 260 340" aria-hidden="true">
+              <path d="M130 34C82 34 45 71 45 119v151h170V119c0-48-37-85-85-85Z" fill="none" stroke="currentColor" stroke-width="1"/>
+              <path d="M130 50c-39 0-68 29-68 68v139h136V118c0-39-29-68-68-68Z" fill="none" stroke="currentColor" stroke-width=".7"/>
+              <circle cx="130" cy="128" r="31" fill="none" stroke="currentColor" stroke-width="1"/>
+              <path d="M72 258c7-47 29-72 58-72s51 25 58 72" fill="none" stroke="currentColor" stroke-width="1"/>
+              <path d="M130 8v18M130 285v34M19 170h18M223 170h18" stroke="currentColor" stroke-width=".7"/>
+              <circle cx="130" cy="170" r="112" fill="none" stroke="currentColor" stroke-dasharray="1 7" opacity=".7"/>
+            </svg>
+            <span>PORTRAIT OF<br> A LIFE REMEMBERED</span>
+            <small>Tambahkan foto keluarga<br>ke folder <code>assets/nenek.jpg</code></small>
           </div>
-          <span class="arch-caption">A life remembered with love</span>
         </div>
-        <span class="hero-side-note">WITH LOVE · WITH PRAYERS · ALWAYS</span>
-        <svg class="hero-ornament" viewBox="0 0 150 150" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width=".8"><circle cx="75" cy="75" r="65"/><circle cx="75" cy="75" r="47"/><path d="M75 4C89 29 121 42 146 75 121 108 89 121 75 146 61 121 29 108 4 75 29 42 61 29 75 4Z"/><path d="M75 22C94 44 106 56 128 75 106 94 94 106 75 128 56 106 44 94 22 75 44 56 56 44 75 22Z"/></g></svg>
+        <div class="portrait-index"><span>HER PRESENCE</span><span>STAYS WITH US</span></div>
+        <div class="portrait-caption"><span>FIG. 01</span><span>A memory held close</span></div>
+        <svg class="portrait-kolam" viewBox="0 0 190 190" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width=".75"><circle cx="95" cy="95" r="84"/><circle cx="95" cy="95" r="60"/><path d="M95 11C110 42 148 54 179 95 148 136 110 148 95 179 80 148 42 136 11 95 42 54 80 42 95 11Z"/><path d="M95 31C116 55 135 74 159 95 135 116 116 135 95 159 74 135 55 116 31 95 55 74 74 55 95 31Z"/></g></svg>
       </div>
-      <div class="hero-foot"><span>01 / REMEMBERING</span><span>SCROLL TO EXPLORE ↓</span></div>
+      <a class="hero-scroll" href="#meaning"><span>DISCOVER THE GATHERING</span><i></i></a>
+      <div class="hero-number">01<span>/</span>04</div>
     </section>
 
-    <section class="meaning section-pad" id="meaning">
-      <div class="section-index reveal"><span>02</span><span class="index-line"></span><span>THE MEANING</span></div>
+    <div class="remembrance-band" aria-label="Tema pertemuan">
+      <span>REMEMBRANCE</span><b>✳</b><span>PRAYER</span><b>✳</b><span>FAMILY</span><b>✳</b><span>LOVE THAT REMAINS</span>
+    </div>
+
+    <section class="meaning section" id="meaning">
+      <div class="section-label reveal"><span>02</span><i></i><span>THE MEANING</span></div>
       <div class="meaning-layout">
-        <div class="meaning-heading reveal"><p class="eyebrow">A TRADITION OF REMEMBRANCE</p><h2>A gathering<br>for <em>prayer.</em></h2><div class="mini-kolam" aria-hidden="true">✳</div></div>
-        <div class="meaning-body reveal reveal-delay"><p class="dropcap">Karumathi</p><p class="meaning-copy">Dalam tradisi Hindu Tamil, Karumathi merupakan momen doa dan penghormatan bagi seseorang yang telah berpulang, sekaligus menjadi penanda berakhirnya masa berkabung keluarga.</p><p class="meaning-note">Sebuah kesempatan untuk berkumpul, mengenang kasih yang telah diberikan, dan memanjatkan doa dengan penuh ketulusan.</p><div class="meaning-signature">In remembrance, in gratitude, together.</div></div>
-      </div>
-      <div class="meaning-bottom"><span class="gold-rule"></span><span>TRADITION · REMEMBRANCE · FAMILY</span></div>
-    </section>
-
-    <section class="letter-section section-pad" id="invitation">
-      <div class="section-index reveal"><span>03</span><span class="index-line"></span><span>THE INVITATION</span></div>
-      <div class="letter-wrap reveal">
-        <div class="letter-corner letter-tl" aria-hidden="true"></div><div class="letter-corner letter-tr" aria-hidden="true"></div><div class="letter-corner letter-bl" aria-hidden="true"></div><div class="letter-corner letter-br" aria-hidden="true"></div>
-        <div class="letter-content">
-          <div class="letter-seal" aria-hidden="true"><span>✳</span></div>
-          <p class="eyebrow">WITH LOVE AND HUMBLE RESPECT</p>
-          <h2>To our family<br><em>and dear ones.</em></h2>
-          <div class="letter-divider"><span></span><i>✳</i><span></span></div>
-          <p class="letter-greeting">Om Shanti.</p>
-          <p class="letter-copy">Dengan penuh rasa hormat dan kasih, kami mengundang seluruh keluarga, saudara, serta kerabat untuk berkenan hadir dalam upacara Karumathi untuk mengenang dan mendoakan mendiang nenek tercinta kami.</p>
-          <p class="letter-copy">Kehadiran dan doa dari keluarga serta kerabat akan menjadi suatu kehormatan dan penghiburan bagi keluarga kami. Mari bersama-sama berkumpul dalam doa, kasih, dan kenangan yang akan selalu hidup di hati.</p>
-          <p class="letter-closing">Your presence and prayers<br>will be deeply cherished.</p>
-          <div class="letter-family"><span>Dengan hormat,</span><strong id="familyName">Keluarga [ Nama Keluarga ]</strong></div>
-        </div>
-        <div class="letter-side-ornament" aria-hidden="true">K A R U M A T H I</div>
-      </div>
-    </section>
-
-    <section class="details section-pad" id="details">
-      <div class="section-index reveal"><span>04</span><span class="index-line"></span><span>THE GATHERING</span></div>
-      <div class="details-heading reveal"><p class="eyebrow">PLEASE JOIN US</p><h2>When we<br><em>gather.</em></h2><p class="details-intro">Dengan penuh hormat, kami menantikan kehadiran keluarga dan kerabat.</p></div>
-      <div class="details-main reveal reveal-delay">
-        <div class="date-display"><span class="date-overline">THE DAY OF REMEMBRANCE</span><strong id="dateDay">—</strong><div><span id="dateMonth">TANGGAL MENYUSUL</span><span id="dateYear"></span></div></div>
-        <div class="details-list">
-          <div class="detail-row"><span class="detail-label">HARI & TANGGAL</span><strong id="detailDate">Akan diinformasikan</strong></div>
-          <div class="detail-row"><span class="detail-label">WAKTU</span><strong id="detailTime">Akan diinformasikan</strong></div>
-          <div class="detail-row"><span class="detail-label">TEMPAT</span><strong id="detailVenue">Akan diinformasikan</strong></div>
-          <div class="detail-row"><span class="detail-label">ALAMAT</span><strong id="detailAddress">Akan diinformasikan</strong></div>
-          <a class="map-link" id="mapLink" href="#" target="_blank" rel="noopener" hidden><span>Lihat lokasi di Google Maps</span><b aria-hidden="true">↗</b></a>
+        <div class="meaning-title reveal"><p class="eyebrow">A TRADITION OF REMEMBRANCE</p><h2>Gathered<br>in <em>prayer.</em></h2><div class="meaning-seal" aria-hidden="true"><span>✳</span><small>KARUMATHI</small></div></div>
+        <div class="meaning-copy reveal reveal-late">
+          <p class="meaning-lede"><span class="drop-letter">K</span>arumathi merupakan bagian dari tradisi Hindu Tamil sebagai momen doa dan penghormatan bagi seseorang yang telah berpulang, sekaligus penanda berakhirnya masa berkabung keluarga.</p>
+          <p>Di tengah keluarga dan kerabat, kita berkumpul untuk mengenang kasih yang telah diberikan, meneruskan nilai-nilai yang diwariskan, dan memanjatkan doa dengan penuh ketulusan.</p>
+          <div class="meaning-footnote"><span class="footnote-line"></span><span>Pelaksanaan mengikuti tradisi keluarga dan arahan pemuka agama setempat.</span></div>
         </div>
       </div>
-      <div class="countdown-wrap reveal" id="countdownWrap" hidden>
-        <div><span class="eyebrow">COUNTING THE DAYS</span><p>Until we gather in prayer</p></div>
-        <div class="countdown" aria-live="off"><div><strong id="cdDays">00</strong><span>HARI</span></div><i>:</i><div><strong id="cdHours">00</strong><span>JAM</span></div><i>:</i><div><strong id="cdMinutes">00</strong><span>MENIT</span></div><i>:</i><div><strong id="cdSeconds">00</strong><span>DETIK</span></div></div>
+      <div class="meaning-bottom"><span>HONOURING A LIFE</span><span>IN THE COMPANY OF FAMILY</span></div>
+      <svg class="meaning-ornament" viewBox="0 0 360 360" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width=".7"><circle cx="180" cy="180" r="155"/><circle cx="180" cy="180" r="125"/><circle cx="180" cy="180" r="85"/><path d="M180 25C208 73 287 101 335 180 287 259 208 287 180 335 152 287 73 259 25 180 73 101 152 73 180 25Z"/><path d="M180 55C219 101 259 141 305 180 259 219 219 259 180 305 141 259 101 219 55 180 101 141 141 101 180 55Z"/></g></svg>
+    </section>
+
+    <section class="letter-section section" id="letter">
+      <div class="section-label section-label-light reveal"><span>03</span><i></i><span>THE INVITATION</span></div>
+      <div class="letter-layout">
+        <div class="letter-aside reveal"><span class="letter-aside-top">A NOTE TO OUR FAMILY</span><span class="letter-aside-symbol">K</span><span class="letter-aside-bottom">WITH HUMBLE RESPECT</span></div>
+        <article class="letter-paper reveal reveal-late">
+          <div class="letter-paper-top"><span>TO OUR FAMILY & DEAR ONES</span><span>AN INVITATION</span></div>
+          <div class="letter-body">
+            <p class="letter-salutation">Dengan penuh hormat,</p>
+            <h2>Kehadiranmu<br><em>berarti bagi kami.</em></h2>
+            <p>Dengan penuh rasa hormat dan kasih, kami mengundang seluruh keluarga, saudara, serta kerabat untuk berkenan hadir dalam upacara Karumathi untuk mengenang dan mendoakan mendiang nenek tercinta kami.</p>
+            <p>Kehadiran serta doa dari keluarga dan kerabat akan menjadi kehormatan dan penghiburan bagi keluarga kami. Mari berkumpul dalam doa, kasih, dan kenangan yang akan selalu hidup di hati.</p>
+            <div class="letter-signoff"><span>Your presence and prayers<br>will be deeply cherished.</span><div><small>Dengan hormat,</small><strong id="familyName">Keluarga [ Nama Keluarga ]</strong></div></div>
+          </div>
+          <div class="letter-paper-foot"><span>KARUMATHI CEREMONY</span><span>WITH LOVE · ALWAYS</span></div>
+          <span class="paper-corner paper-corner-a" aria-hidden="true"></span><span class="paper-corner paper-corner-b" aria-hidden="true"></span>
+        </article>
       </div>
-      <p class="details-note" id="detailsNote">Detail waktu dan tempat akan dilengkapi setelah dikonfirmasi oleh keluarga.</p>
+      <div class="letter-background-word" aria-hidden="true">TOGETHER</div>
+    </section>
+
+    <section class="gathering section" id="gathering">
+      <div class="section-label reveal"><span>04</span><i></i><span>THE GATHERING</span></div>
+      <div class="gathering-heading reveal"><p class="eyebrow">PLEASE JOIN US</p><h2>We gather<br><em>as family.</em></h2><p>Semoga kita dapat bertemu dalam suasana penuh doa dan kebersamaan.</p></div>
+      <div class="gathering-content reveal reveal-late">
+        <div class="date-composition"><span class="date-label">THE DAY OF REMEMBRANCE</span><strong id="dateDay">—</strong><div class="date-month-line"><span id="dateMonth">TANGGAL</span><span id="dateYear"></span></div><span class="date-decoration" aria-hidden="true">✳</span></div>
+        <div class="event-information">
+          <div class="event-row"><span>HARI & TANGGAL</span><strong id="detailDate">Akan diinformasikan</strong></div>
+          <div class="event-row"><span>WAKTU</span><strong id="detailTime">Akan diinformasikan</strong></div>
+          <div class="event-row"><span>TEMPAT</span><strong id="detailVenue">Akan diinformasikan</strong></div>
+          <div class="event-row"><span>ALAMAT</span><strong id="detailAddress">Akan diinformasikan</strong></div>
+          <a class="map-button" id="mapLink" href="#" target="_blank" rel="noopener" hidden><span>Lihat lokasi</span><b aria-hidden="true">↗</b></a>
+        </div>
+      </div>
+      <div class="countdown-row" id="countdownWrap" hidden>
+        <div><span class="eyebrow">COUNTING THE MOMENTS</span><p>Until we gather in prayer</p></div>
+        <div class="countdown"><div><strong id="cdDays">00</strong><span>HARI</span></div><i>:</i><div><strong id="cdHours">00</strong><span>JAM</span></div><i>:</i><div><strong id="cdMinutes">00</strong><span>MENIT</span></div><i>:</i><div><strong id="cdSeconds">00</strong><span>DETIK</span></div></div>
+      </div>
+      <p class="gathering-note" id="gatheringNote">Informasi waktu dan tempat akan dilengkapi oleh keluarga.</p>
     </section>
 
     <section class="prayer-section">
-      <div class="prayer-glow" aria-hidden="true"></div>
-      <div class="prayer-content reveal">
-        <div class="lamp-art" aria-hidden="true">
-          <svg viewBox="0 0 180 230"><defs><radialGradient id="flameGlow"><stop offset="0" stop-color="#f9df9c" stop-opacity=".85"/><stop offset="1" stop-color="#f9df9c" stop-opacity="0"/></radialGradient></defs><circle cx="90" cy="50" r="55" fill="url(#flameGlow)"/><path d="M90 9C72 31 78 44 90 56 102 44 108 31 90 9Z" fill="#e8c77f"/><path d="M90 23C83 38 88 43 90 47 97 39 96 30 90 23Z" fill="#fff1c8"/><path d="M62 84H118L111 107H69Z" fill="#b99a62"/><path d="M47 111C55 124 125 124 133 111L123 127H57Z" fill="#c7a66b"/><path d="M78 128H102L108 179H72Z" fill="#a98954"/><path d="M58 181H122L137 195H43Z" fill="#c7a66b"/><path d="M37 198H143V207H37Z" fill="#8b7048"/><path d="M68 111C75 103 105 103 112 111" fill="none" stroke="#f4dfac" stroke-width="2"/><path d="M72 151H108M69 165H111" stroke="#e7d2a4" stroke-width="1" opacity=".8"/></svg>
-        </div>
-        <p class="eyebrow">A MOMENT OF PRAYER</p>
-        <h2>Beyond time,<br><em>beyond presence.</em></h2>
-        <p class="prayer-quote">“May peace embrace the departed, and may love remain forever in the hearts of those who remember.”</p>
-        <span class="prayer-om">OM SHANTI</span>
+      <div class="prayer-topline"><span>A QUIET MOMENT</span><span>FOR REMEMBRANCE</span></div>
+      <div class="lamp-scene reveal" aria-hidden="true">
+        <span class="lamp-glow"></span>
+        <svg class="lamp-drawing" viewBox="0 0 250 300">
+          <g fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M125 18c-13 17-13 31 0 44 13-13 13-27 0-44Z" fill="#c08d4a" stroke="#c08d4a"/>
+            <path d="M125 60v19M94 89c7-8 55-8 62 0l-8 18H102l-8-18Z"/>
+            <path d="M64 117c18-17 104-17 122 0l-12 20H76l-12-20Z"/>
+            <path d="M74 138c7 24 16 31 51 31s44-7 51-31M92 171l-9 39h84l-9-39"/>
+            <path d="M83 210c-13 11-20 24-20 39h124c0-15-7-28-20-39M56 249h138M73 261h104M91 273h68"/>
+            <path d="M125 79c-22 0-40 6-48 15M125 79c22 0 40 6 48 15" opacity=".55"/>
+            <path d="M125 107c-10-9-23-10-34-5M125 107c10-9 23-10 34-5" opacity=".55"/>
+          </g>
+          <g fill="currentColor"><circle cx="125" cy="116" r="2.5"/><circle cx="125" cy="197" r="2"/></g>
+        </svg>
       </div>
+      <div class="prayer-copy reveal"><p class="eyebrow">BEYOND TIME, BEYOND PRESENCE</p><h2>Love remains.<br><em>Always.</em></h2><p>May peace embrace the departed,<br>and may love remain in every heart<br>that remembers.</p></div>
+      <div class="prayer-foot"><span>IN EVERY STORY WE SHARE</span><span>IN EVERY PRAYER WE OFFER</span></div>
     </section>
 
-    <footer class="closing section-pad">
-      <div class="closing-ornament" aria-hidden="true"><svg viewBox="0 0 220 110"><g fill="none" stroke="currentColor" stroke-width=".8"><path d="M110 100C96 71 65 57 10 55 65 53 96 39 110 10 124 39 155 53 210 55 155 57 124 71 110 100Z"/><path d="M110 87C98 66 80 57 42 55 80 53 98 44 110 23 122 44 140 53 178 55 140 57 122 66 110 87Z"/><circle cx="110" cy="55" r="5"/></g></svg></div>
-      <p class="eyebrow">FOREVER IN OUR HEARTS</p>
-      <h2>A life that will<br><em>always be cherished.</em></h2>
-      <p class="closing-copy">Though we gather in remembrance, the love and memories will remain with us forever.</p>
-      <p class="closing-name" id="closingName">[ Nama Nenek ]</p>
-      <p class="closing-mantra">OM SHANTI · OM SHANTI · OM SHANTI</p>
-      <div class="footer-line"><span>KARUMATHI CEREMONY</span><span>MADE WITH LOVE & RESPECT</span></div>
+    <footer class="closing">
+      <div class="closing-ornament" aria-hidden="true"><svg viewBox="0 0 160 160"><g fill="none" stroke="currentColor" stroke-width=".8"><circle cx="80" cy="80" r="68"/><circle cx="80" cy="80" r="48"/><path d="M80 12C93 37 123 51 148 80 123 109 93 123 80 148 67 123 37 109 12 80 37 51 67 37 80 12Z"/><path d="M80 31C99 51 109 61 129 80 109 99 99 109 80 129 61 109 51 99 31 80 51 61 61 51 80 31Z"/></g></svg></div>
+      <p class="eyebrow">A LIFE THAT WILL ALWAYS BE CHERISHED</p>
+      <h2 id="closingName">[ Nama Nenek ]</h2>
+      <p class="closing-copy">The memories remain. The love continues.<br>And in every prayer, we remember.</p>
+      <div class="closing-rule"><span></span><b>✳</b><span></span></div>
+      <p class="closing-family" id="closingFamily">Keluarga [ Nama Keluarga ]</p>
+      <div class="closing-bottom"><span>KARUMATHI · FAMILY REMEMBRANCE</span><a href="#home">KEMBALI KE ATAS ↑</a></div>
     </footer>
   </main>
 
-  <audio id="backgroundMusic" preload="none" loop></audio>
-  <script src="script.js"></script>
+  <audio id="backgroundAudio" preload="none" loop></audio>
+  <noscript><p class="noscript-note">Aktifkan JavaScript untuk membuka pengalaman undangan ini.</p></noscript>
 </body>
 </html>
