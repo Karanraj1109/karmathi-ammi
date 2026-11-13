@@ -1,188 +1,202 @@
-/* =========================================================
-   EDIT DETAIL UNDANGAN DI BAGIAN CONFIG INI SAJA
-   Tanggal memakai format YYYY-MM-DD, contoh: 2026-12-01
-   Kosongkan tanggal jika belum ditentukan.
-   ========================================================= */
+/*
+  EDIT DETAIL ACARA DI OBJECT CONFIG INI SAJA.
+  eventDate menggunakan YYYY-MM-DD, contoh: 2026-12-01.
+  Foto: letakkan file di assets/nenek.jpg atau ubah portraitFile.
+  Musik opsional: letakkan file di assets/ambient.mp3 atau ubah musicFile.
+*/
 const CONFIG = {
   deceasedName: "[ Nama Nenek ]",
   familyName: "Keluarga [ Nama Keluarga ]",
-  eventDate: "",             // Contoh: 2026-12-01
-  eventTime: "",             // Contoh: 09.00 WIB
-  venue: "",                 // Nama tempat acara
-  address: "",               // Alamat lengkap acara
-  mapsUrl: "",               // Opsional: tautan Google Maps langsung
-  musicFile: "assets/ambient.mp3" // Opsional: tambahkan file musik milik keluarga
+  eventDate: "",        // YYYY-MM-DD
+  eventTime: "",        // Contoh: 09.00 WIB
+  venue: "",            // Nama tempat
+  address: "",          // Alamat lengkap
+  mapsUrl: "",          // Opsional: tautan Google Maps
+  portraitFile: "assets/nenek.jpg",
+  musicFile: ""         // Opsional: assets/ambient.mp3
 };
 
 const $ = (id) => document.getElementById(id);
-const intro = $("intro");
-const site = $("mainContent");
-const music = $("backgroundMusic");
-let isPlaying = false;
+const clean = (value) => typeof value === "string" ? value.trim() : "";
+const showText = (id, value, fallback = "Akan diinformasikan") => {
+  const node = $(id);
+  if (node) node.textContent = clean(value) || fallback;
+};
 
-function setText(id, value, fallback) {
-  const el = $(id);
-  if (el) el.textContent = value && String(value).trim() ? value : fallback;
+function parseLocalDate(value) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+  const [year, month, day] = value.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+  return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day ? date : null;
 }
 
-function setupContent() {
-  const name = CONFIG.deceasedName || "[ Nama Nenek ]";
-  setText("introName", name, "[ Nama Nenek ]");
-  setText("heroName", name, "[ Nama Nenek ]");
-  setText("closingName", name, "[ Nama Nenek ]");
-  setText("familyName", CONFIG.familyName, "Keluarga [ Nama Keluarga ]");
+function setInvitationContent() {
+  const name = clean(CONFIG.deceasedName) || "[ Nama Nenek ]";
+  const family = clean(CONFIG.familyName) || "Keluarga [ Nama Keluarga ]";
+  ["entryName", "heroName", "closingName"].forEach((id) => showText(id, name, "[ Nama Nenek ]"));
+  showText("familyName", family);
+  showText("closingFamily", family);
+  showText("detailTime", CONFIG.eventTime);
+  showText("detailVenue", CONFIG.venue);
+  showText("detailAddress", CONFIG.address);
 
-  const hasDate = /^\d{4}-\d{2}-\d{2}$/.test(CONFIG.eventDate);
-  let date = null;
-  if (hasDate) {
-    const [year, month, day] = CONFIG.eventDate.split("-").map(Number);
-    date = new Date(year, month - 1, day);
-    if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) date = null;
-  }
-
+  const date = parseLocalDate(clean(CONFIG.eventDate));
   if (date) {
     const weekday = new Intl.DateTimeFormat("id-ID", { weekday: "long" }).format(date);
-    const monthName = new Intl.DateTimeFormat("id-ID", { month: "long" }).format(date);
-    const dateLabel = new Intl.DateTimeFormat("id-ID", { day: "numeric", month: "long", year: "numeric" }).format(date);
-    setText("dateDay", String(date.getDate()).padStart(2, "0"), "—");
-    setText("dateMonth", monthName.toUpperCase(), "");
-    setText("dateYear", String(date.getFullYear()), "");
-    setText("detailDate", `${weekday}, ${dateLabel}`, "Akan diinformasikan");
-    const countdownDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    if (countdownDate.getTime() >= new Date(new Date().toDateString()).getTime()) {
+    const month = new Intl.DateTimeFormat("id-ID", { month: "long" }).format(date);
+    const fullDate = new Intl.DateTimeFormat("id-ID", { day: "numeric", month: "long", year: "numeric" }).format(date);
+    showText("dateDay", String(date.getDate()).padStart(2, "0"), "—");
+    showText("dateMonth", month.toUpperCase(), "TANGGAL");
+    showText("dateYear", String(date.getFullYear()), "");
+    showText("detailDate", weekday + ", " + fullDate);
+
+    const timeMatch = clean(CONFIG.eventTime).match(/(\d{1,2})[.:](\d{2})/);
+    const hour = timeMatch ? Math.min(23, Number(timeMatch[1])) : 0;
+    const minute = timeMatch ? Math.min(59, Number(timeMatch[2])) : 0;
+    const target = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, minute, 0);
+    if (target.getTime() > Date.now()) {
       $("countdownWrap").hidden = false;
-      $("detailsNote").textContent = "Kami menantikan kesempatan untuk berkumpul dalam doa dan kenangan.";
-      startCountdown(date);
+      $("gatheringNote").textContent = "Kami menantikan kesempatan untuk berkumpul dalam doa dan kenangan.";
+      startCountdown(target);
     } else {
       $("countdownWrap").hidden = true;
-      $("detailsNote").textContent = "Tanggal acara telah berlalu. Informasi undangan ditampilkan sebagai arsip kenangan keluarga.";
+      $("gatheringNote").textContent = "Tanggal acara telah berlalu. Informasi ini dapat tetap menjadi arsip kenangan keluarga.";
     }
   } else {
-    setText("dateDay", "—", "—");
-    setText("dateMonth", "TANGGAL MENYUSUL", "TANGGAL MENYUSUL");
-    setText("dateYear", "", "");
-    setText("detailDate", "Akan diinformasikan", "Akan diinformasikan");
+    showText("dateDay", "—", "—");
+    showText("dateMonth", "TANGGAL MENYUSUL", "TANGGAL MENYUSUL");
+    showText("dateYear", "", "");
+    showText("detailDate", "Akan diinformasikan");
     $("countdownWrap").hidden = true;
+    $("gatheringNote").textContent = "Informasi waktu dan tempat akan dilengkapi oleh keluarga.";
   }
 
-  setText("detailTime", CONFIG.eventTime, "Akan diinformasikan");
-  setText("detailVenue", CONFIG.venue, "Akan diinformasikan");
-  setText("detailAddress", CONFIG.address, "Akan diinformasikan");
-
-  const mapLink = $("mapLink");
-  const mapTarget = CONFIG.mapsUrl || (CONFIG.address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CONFIG.address)}` : "");
-  if (mapTarget) {
-    mapLink.href = mapTarget;
-    mapLink.hidden = false;
+  const map = $("mapLink");
+  const mapUrl = clean(CONFIG.mapsUrl) || (clean(CONFIG.address)
+    ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.address)
+    : "");
+  if (mapUrl) {
+    map.href = mapUrl;
+    map.hidden = false;
+  } else {
+    map.hidden = true;
   }
 
   const photo = $("memorialPhoto");
-  const placeholder = $("photoPlaceholder");
-  photo.addEventListener("load", () => { placeholder.hidden = true; });
-  photo.addEventListener("error", () => { photo.hidden = true; placeholder.hidden = false; });
+  const placeholder = $("portraitPlaceholder");
+  if (clean(CONFIG.portraitFile)) {
+    photo.addEventListener("load", () => {
+      photo.classList.add("is-loaded");
+      placeholder.hidden = true;
+    }, { once: true });
+    photo.addEventListener("error", () => {
+      photo.classList.remove("is-loaded");
+      placeholder.hidden = false;
+    }, { once: true });
+    photo.src = CONFIG.portraitFile;
+  }
 
-  if (CONFIG.musicFile) {
-    music.src = CONFIG.musicFile;
-    music.addEventListener("error", () => { $("soundButton").hidden = true; });
-    // Tampilkan kontrol setelah sumber tersedia; bila file tidak ada, kontrol disembunyikan saat error.
-    $("soundButton").hidden = false;
+  const audio = $("backgroundAudio");
+  const audioButton = $("audioToggle");
+  if (clean(CONFIG.musicFile)) {
+    audio.src = CONFIG.musicFile;
+    audioButton.hidden = false;
   }
 }
 
-function startCountdown(eventDate) {
-  // Ikuti jam acara bila ditulis sebagai 09.00 / 09:00; jika belum diisi, gunakan awal hari.
-  const timeMatch = String(CONFIG.eventTime || "").match(/(\d{1,2})[.:](\d{2})/);
-  const hour = timeMatch ? Math.min(23, Number(timeMatch[1])) : 0;
-  const minute = timeMatch ? Math.min(59, Number(timeMatch[2])) : 0;
-  const target = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate(), hour, minute, 0);
+function startCountdown(target) {
+  let intervalId;
   const update = () => {
-    const distance = target.getTime() - Date.now();
-    if (distance <= 0) {
+    const remaining = target.getTime() - Date.now();
+    if (remaining <= 0) {
       $("countdownWrap").hidden = true;
+      if (intervalId) clearInterval(intervalId);
       return;
     }
-    const days = Math.floor(distance / 86400000);
-    const hours = Math.floor((distance % 86400000) / 3600000);
-    const minutes = Math.floor((distance % 3600000) / 60000);
-    const seconds = Math.floor((distance % 60000) / 1000);
-    setText("cdDays", String(days).padStart(2, "0"), "00");
-    setText("cdHours", String(hours).padStart(2, "0"), "00");
-    setText("cdMinutes", String(minutes).padStart(2, "0"), "00");
-    setText("cdSeconds", String(seconds).padStart(2, "0"), "00");
+    const values = {
+      cdDays: Math.floor(remaining / 86400000),
+      cdHours: Math.floor((remaining % 86400000) / 3600000),
+      cdMinutes: Math.floor((remaining % 3600000) / 60000),
+      cdSeconds: Math.floor((remaining % 60000) / 1000)
+    };
+    Object.entries(values).forEach(([id, number]) => showText(id, String(number).padStart(2, "0"), "00"));
   };
   update();
-  window.setInterval(update, 1000);
+  intervalId = window.setInterval(update, 1000);
 }
 
-function enterInvitation() {
-  intro.classList.add("is-leaving");
+function openInvitation() {
+  const entry = $("entry");
+  const site = $("site");
+  document.body.classList.remove("is-entering");
+  entry.classList.add("is-opening");
   site.classList.add("is-visible");
   site.setAttribute("aria-hidden", "false");
-  window.setTimeout(() => { intro.hidden = true; }, 1050);
-  if (CONFIG.musicFile) {
-    music.play().then(() => setMusicState(true)).catch(() => setMusicState(false));
-  }
+  window.setTimeout(() => { entry.hidden = true; }, 950);
 }
 
-function setMusicState(playing) {
-  isPlaying = playing;
-  const button = $("soundButton");
-  button.classList.toggle("is-playing", playing);
-  button.setAttribute("aria-label", playing ? "Jeda musik" : "Putar musik");
-  setText("soundLabel", playing ? "Musik aktif" : "Suara", "Suara");
+function setupAudio() {
+  const audio = $("backgroundAudio");
+  const button = $("audioToggle");
+  const label = $("audioLabel");
+  if (!clean(CONFIG.musicFile)) return;
+  button.addEventListener("click", async () => {
+    if (!audio.paused) {
+      audio.pause();
+      button.classList.remove("is-playing");
+      button.setAttribute("aria-label", "Putar musik");
+      label.textContent = "AUDIO OFF";
+      return;
+    }
+    try {
+      await audio.play();
+      button.classList.add("is-playing");
+      button.setAttribute("aria-label", "Jeda musik");
+      label.textContent = "AUDIO ON";
+    } catch (error) {
+      label.textContent = "AUDIO OFF";
+    }
+  });
+  audio.addEventListener("ended", () => button.classList.remove("is-playing"));
 }
-
-$("enterButton").addEventListener("click", enterInvitation);
-$("skipButton").addEventListener("click", enterInvitation);
-$("soundButton").addEventListener("click", async () => {
-  if (isPlaying) {
-    music.pause();
-    setMusicState(false);
-    return;
-  }
-  try {
-    await music.play();
-    setMusicState(true);
-  } catch (error) {
-    setMusicState(false);
-  }
-});
 
 function setupReveal() {
-  const items = document.querySelectorAll(".reveal");
+  const elements = document.querySelectorAll(".reveal");
   if (!("IntersectionObserver" in window)) {
-    items.forEach((item) => item.classList.add("is-in"));
+    elements.forEach((element) => element.classList.add("is-visible"));
     return;
   }
   const observer = new IntersectionObserver((entries, currentObserver) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        entry.target.classList.add("is-in");
+        entry.target.classList.add("is-visible");
         currentObserver.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.14, rootMargin: "0px 0px -35px 0px" });
-  items.forEach((item) => observer.observe(item));
+  }, { threshold: 0.12, rootMargin: "0px 0px -30px 0px" });
+  elements.forEach((element) => observer.observe(element));
 }
 
-function setupProgress() {
-  const bar = $("progressBar");
-  let ticking = false;
+function setupReadingProgress() {
+  const bar = $("readingProgress");
+  let scheduled = false;
   const update = () => {
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = maxScroll > 0 ? (window.scrollY / maxScroll) * 100 : 0;
-    bar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
-    ticking = false;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = max > 0 ? (window.scrollY / max) * 100 : 0;
+    bar.style.width = String(Math.max(0, Math.min(100, progress))) + "%";
+    scheduled = false;
   };
   window.addEventListener("scroll", () => {
-    if (!ticking) {
+    if (!scheduled) {
       window.requestAnimationFrame(update);
-      ticking = true;
+      scheduled = true;
     }
   }, { passive: true });
   update();
 }
 
-setupContent();
+$("openInvitation").addEventListener("click", openInvitation);
+setInvitationContent();
+setupAudio();
 setupReveal();
-setupProgress();
+setupReadingProgress();
