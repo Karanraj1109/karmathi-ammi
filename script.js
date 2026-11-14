@@ -1,202 +1,51 @@
-/*
-  EDIT DETAIL ACARA DI OBJECT CONFIG INI SAJA.
-  eventDate menggunakan YYYY-MM-DD, contoh: 2026-12-01.
-  Foto: letakkan file di assets/nenek.jpg atau ubah portraitFile.
-  Musik opsional: letakkan file di assets/ambient.mp3 atau ubah musicFile.
-*/
-const CONFIG = {
-  deceasedName: "[ Nama Nenek ]",
-  familyName: "Keluarga [ Nama Keluarga ]",
-  eventDate: "",        // YYYY-MM-DD
-  eventTime: "",        // Contoh: 09.00 WIB
-  venue: "",            // Nama tempat
-  address: "",          // Alamat lengkap
-  mapsUrl: "",          // Opsional: tautan Google Maps
-  portraitFile: "assets/nenek.jpg",
-  musicFile: ""         // Opsional: assets/ambient.mp3
-};
+/* ============================================================
+   SCRIPT.JS : mesin undangan. JANGAN DIEDIT kecuali paham kode.
+   Semua isi undangan ada di data.js
+============================================================ */
+const $=id=>document.getElementById(id);
+const L='id-ID',U={timeZone:'UTC'};
+const wall=iso=>new Date(iso.slice(0,19)+'Z');   // jam dibaca persis seperti yang ditulis, tidak bergeser zona waktu
+const zona=iso=>({'+07':'WIB','+08':'WITA','+09':'WIT'}[iso.slice(-6,-3)]||'');
+const jam=(d,iso)=>d.toLocaleTimeString(L,{...U,hour:'2-digit',minute:'2-digit'}).replace(':','.')+' '+zona(iso);
+const tgl=d=>d.toLocaleDateString(L,{...U,weekday:'long',day:'numeric',month:'long',year:'numeric'});
+const sd=iso=>{const d=new Date(iso+'T00:00:00');if(isNaN(d))return '<b>?</b><span>cek format</span><span>tanggal</span>';return `<b>${d.getDate()}</b><span>${d.toLocaleDateString(L,{month:'long'})}</span><span>${d.getFullYear()}</span>`};
 
-const $ = (id) => document.getElementById(id);
-const clean = (value) => typeof value === "string" ? value.trim() : "";
-const showText = (id, value, fallback = "Akan diinformasikan") => {
-  const node = $(id);
-  if (node) node.textContent = clean(value) || fallback;
-};
+/* kolam sampul */
+(function(){let h='<g fill="none" stroke="#e8cf8f" stroke-width=".7" stroke-linecap="round">',k=0;
+  for(let i=0;i<24;i++){const a=i*15*Math.PI/180;h+=`<circle cx="${(94*Math.sin(a)).toFixed(1)}" cy="${(-94*Math.cos(a)).toFixed(1)}" r="1.3" fill="#e8cf8f" stroke="none"/>`}
+  h+=`<circle class="dr" pathLength="1" style="--k:${k++}" r="86"/><circle class="dr" pathLength="1" style="--k:${k++}" r="20"/>`;
+  for(let i=0;i<8;i++)h+=`<path class="dr" pathLength="1" style="--k:${k++}" transform="rotate(${i*45})" d="M0-20C15-36 15-62 0-82 -15-62 -15-36 0-20z"/>`;
+  for(let i=0;i<8;i++)h+=`<path class="dr" pathLength="1" style="--k:${k++}" transform="rotate(${i*45+22.5})" d="M0-20C8-30 8-44 0-58 -8-44 -8-30 0-20z"/>`;
+  $('kolam').innerHTML=h+'<circle r="3" fill="#e8cf8f" stroke="none"/></g>'})();
 
-function parseLocalDate(value) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
-  const [year, month, day] = value.split("-").map(Number);
-  const date = new Date(year, month - 1, day);
-  return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day ? date : null;
-}
+/* isi data */
+$('salam').textContent=CFG.salam;$('hub').textContent=CFG.hubungan;$('nama').textContent=CFG.nama;$('cvname').textContent=CFG.singkat;
+$('hari').textContent='Doa Hari ke-'+CFG.hariKe;$('hk').textContent=CFG.hariKe;
+$('catatan').textContent=CFG.catatan;$('dirindukan').textContent=CFG.dirindukan;
+$('lh').innerHTML=sd(CFG.lahir);$('wf').innerHTML=sd(CFG.wafat);
+CFG.namaTamil?$('tamil').textContent=CFG.namaTamil:$('tamil').remove();
+CFG.wafatKet?$('wfket').textContent=CFG.wafatKet:$('wfket').remove();
+if(CFG.foto){const im=new Image();im.alt=CFG.nama;
+  im.onload=()=>{$('foto').textContent='';$('foto').appendChild(im)};
+  im.onerror=()=>{$('foto').textContent='Foto tidak ditemukan: '+CFG.foto+' (cek nama file dan lokasinya)'};
+  im.src=CFG.foto}
+const T=wall(CFG.tanggalISO);
+$('tgl').textContent=tgl(T);$('jam').textContent=jam(T,CFG.tanggalISO)+' sampai selesai';
+$('tempat').textContent=CFG.tempat;$('maps').href=CFG.maps;$('keluarga').textContent=CFG.keluarga;
+if(CFG.akhir){const A=wall(CFG.akhir.tanggalISO);$('atgl').textContent=tgl(A);$('ajam').textContent=jam(A,CFG.akhir.tanggalISO);$('atempat').textContent=CFG.akhir.tempat;
+  CFG.akhir.ket?$('aket').textContent=CFG.akhir.ket:$('aketRow').remove()}else $('akhirBox').remove();
+if(!CFG.kontak.length)$('kontakBox').remove();
+CFG.kontak.forEach(c=>{const wa=c.hp.replace(/\D/g,'').replace(/^0/,'62');
+  const a=document.createElement('a');a.href='https://wa.me/'+wa;a.target='_blank';a.rel='noopener';
+  a.innerHTML=`<div><b>${c.nama}</b><br><span>${c.hp}</span></div><em>WhatsApp</em>`;$('kontak').appendChild(a)});
+const toast=t=>{const e=$('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2400)};
 
-function setInvitationContent() {
-  const name = clean(CONFIG.deceasedName) || "[ Nama Nenek ]";
-  const family = clean(CONFIG.familyName) || "Keluarga [ Nama Keluarga ]";
-  ["entryName", "heroName", "closingName"].forEach((id) => showText(id, name, "[ Nama Nenek ]"));
-  showText("familyName", family);
-  showText("closingFamily", family);
-  showText("detailTime", CONFIG.eventTime);
-  showText("detailVenue", CONFIG.venue);
-  showText("detailAddress", CONFIG.address);
+/* munculnya halus saat undangan dibuka */
+let io;
+function reveal(){const els=[...document.querySelectorAll('.el')];
+  io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{root:$('card'),threshold:.15});
+  els.forEach((e,i)=>{if(i<9)e.style.transitionDelay=(i*.1)+'s';io.observe(e)})}
+$('openBtn').addEventListener('click',()=>{$('cover').classList.add('open');$('card').scrollTop=0;reveal();setTimeout(()=>$('cover').style.display='none',1700)});
 
-  const date = parseLocalDate(clean(CONFIG.eventDate));
-  if (date) {
-    const weekday = new Intl.DateTimeFormat("id-ID", { weekday: "long" }).format(date);
-    const month = new Intl.DateTimeFormat("id-ID", { month: "long" }).format(date);
-    const fullDate = new Intl.DateTimeFormat("id-ID", { day: "numeric", month: "long", year: "numeric" }).format(date);
-    showText("dateDay", String(date.getDate()).padStart(2, "0"), "—");
-    showText("dateMonth", month.toUpperCase(), "TANGGAL");
-    showText("dateYear", String(date.getFullYear()), "");
-    showText("detailDate", weekday + ", " + fullDate);
-
-    const timeMatch = clean(CONFIG.eventTime).match(/(\d{1,2})[.:](\d{2})/);
-    const hour = timeMatch ? Math.min(23, Number(timeMatch[1])) : 0;
-    const minute = timeMatch ? Math.min(59, Number(timeMatch[2])) : 0;
-    const target = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, minute, 0);
-    if (target.getTime() > Date.now()) {
-      $("countdownWrap").hidden = false;
-      $("gatheringNote").textContent = "Kami menantikan kesempatan untuk berkumpul dalam doa dan kenangan.";
-      startCountdown(target);
-    } else {
-      $("countdownWrap").hidden = true;
-      $("gatheringNote").textContent = "Tanggal acara telah berlalu. Informasi ini dapat tetap menjadi arsip kenangan keluarga.";
-    }
-  } else {
-    showText("dateDay", "—", "—");
-    showText("dateMonth", "TANGGAL MENYUSUL", "TANGGAL MENYUSUL");
-    showText("dateYear", "", "");
-    showText("detailDate", "Akan diinformasikan");
-    $("countdownWrap").hidden = true;
-    $("gatheringNote").textContent = "Informasi waktu dan tempat akan dilengkapi oleh keluarga.";
-  }
-
-  const map = $("mapLink");
-  const mapUrl = clean(CONFIG.mapsUrl) || (clean(CONFIG.address)
-    ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.address)
-    : "");
-  if (mapUrl) {
-    map.href = mapUrl;
-    map.hidden = false;
-  } else {
-    map.hidden = true;
-  }
-
-  const photo = $("memorialPhoto");
-  const placeholder = $("portraitPlaceholder");
-  if (clean(CONFIG.portraitFile)) {
-    photo.addEventListener("load", () => {
-      photo.classList.add("is-loaded");
-      placeholder.hidden = true;
-    }, { once: true });
-    photo.addEventListener("error", () => {
-      photo.classList.remove("is-loaded");
-      placeholder.hidden = false;
-    }, { once: true });
-    photo.src = CONFIG.portraitFile;
-  }
-
-  const audio = $("backgroundAudio");
-  const audioButton = $("audioToggle");
-  if (clean(CONFIG.musicFile)) {
-    audio.src = CONFIG.musicFile;
-    audioButton.hidden = false;
-  }
-}
-
-function startCountdown(target) {
-  let intervalId;
-  const update = () => {
-    const remaining = target.getTime() - Date.now();
-    if (remaining <= 0) {
-      $("countdownWrap").hidden = true;
-      if (intervalId) clearInterval(intervalId);
-      return;
-    }
-    const values = {
-      cdDays: Math.floor(remaining / 86400000),
-      cdHours: Math.floor((remaining % 86400000) / 3600000),
-      cdMinutes: Math.floor((remaining % 3600000) / 60000),
-      cdSeconds: Math.floor((remaining % 60000) / 1000)
-    };
-    Object.entries(values).forEach(([id, number]) => showText(id, String(number).padStart(2, "0"), "00"));
-  };
-  update();
-  intervalId = window.setInterval(update, 1000);
-}
-
-function openInvitation() {
-  const entry = $("entry");
-  const site = $("site");
-  document.body.classList.remove("is-entering");
-  entry.classList.add("is-opening");
-  site.classList.add("is-visible");
-  site.setAttribute("aria-hidden", "false");
-  window.setTimeout(() => { entry.hidden = true; }, 950);
-}
-
-function setupAudio() {
-  const audio = $("backgroundAudio");
-  const button = $("audioToggle");
-  const label = $("audioLabel");
-  if (!clean(CONFIG.musicFile)) return;
-  button.addEventListener("click", async () => {
-    if (!audio.paused) {
-      audio.pause();
-      button.classList.remove("is-playing");
-      button.setAttribute("aria-label", "Putar musik");
-      label.textContent = "AUDIO OFF";
-      return;
-    }
-    try {
-      await audio.play();
-      button.classList.add("is-playing");
-      button.setAttribute("aria-label", "Jeda musik");
-      label.textContent = "AUDIO ON";
-    } catch (error) {
-      label.textContent = "AUDIO OFF";
-    }
-  });
-  audio.addEventListener("ended", () => button.classList.remove("is-playing"));
-}
-
-function setupReveal() {
-  const elements = document.querySelectorAll(".reveal");
-  if (!("IntersectionObserver" in window)) {
-    elements.forEach((element) => element.classList.add("is-visible"));
-    return;
-  }
-  const observer = new IntersectionObserver((entries, currentObserver) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
-        currentObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12, rootMargin: "0px 0px -30px 0px" });
-  elements.forEach((element) => observer.observe(element));
-}
-
-function setupReadingProgress() {
-  const bar = $("readingProgress");
-  let scheduled = false;
-  const update = () => {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = max > 0 ? (window.scrollY / max) * 100 : 0;
-    bar.style.width = String(Math.max(0, Math.min(100, progress))) + "%";
-    scheduled = false;
-  };
-  window.addEventListener("scroll", () => {
-    if (!scheduled) {
-      window.requestAnimationFrame(update);
-      scheduled = true;
-    }
-  }, { passive: true });
-  update();
-}
-
-$("openInvitation").addEventListener("click", openInvitation);
-setInvitationContent();
-setupAudio();
-setupReveal();
-setupReadingProgress();
+$('share').addEventListener('click',async()=>{const d={title:'Undangan Karumathi',text:`Undangan Doa Karumathi ${CFG.nama}\n${$('tgl').textContent}, ${$('jam').textContent}\n${CFG.tempat}`,url:location.href};
+  try{if(navigator.share)await navigator.share(d);else{await navigator.clipboard.writeText(d.text+'\n'+d.url);toast('Teks undangan disalin')}}catch(e){}});

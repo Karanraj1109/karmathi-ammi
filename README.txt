@@ -1,31 +1,33 @@
-KARUMATHI — DIGITAL FAMILY INVITATION
+PANDUAN SINGKAT UNDANGAN KARUMATHI
+==================================
 
-CARA MENJALANKAN
-1. Ekstrak folder/ZIP ke komputer atau HP.
-2. Buka index.html menggunakan browser.
-3. Website berjalan tanpa backend dan tanpa proses instalasi.
+ISI FOLDER
+  index.html   = kerangka halaman        (JANGAN DIEDIT)
+  style.css    = tampilan / warna / huruf (JANGAN DIEDIT)
+  script.js    = mesin animasi dan tombol (JANGAN DIEDIT)
+  data.js      = ISI UNDANGAN             (INI YANG DIEDIT)
+  foto/        = taruh foto nenek di sini
 
-CARA MENGGANTI DETAIL UNDANGAN
-Buka script.js. Di bagian paling atas ada objek CONFIG.
-Ganti nilai berikut:
-- deceasedName: nama mendiang
-- familyName: nama keluarga yang mengundang
-- eventDate: tanggal format YYYY-MM-DD (kosongkan jika belum ada)
-- eventTime: jam acara
-- venue: nama tempat
-- address: alamat lengkap
-- mapsUrl: opsional, tautan Google Maps langsung
-- musicFile: opsional, lokasi file musik
+YANG DIGANTI (semua di data.js)
+  1. salam, nama, namaTamil, singkat, hubungan
+  2. foto             -> contoh: foto: "foto/nenek.jpg"
+  3. lahir dan wafat  -> format TAHUN-BULAN-TANGGAL (contoh 1940-05-03)
+  4. tanggalISO       -> tanggal dan jam acara
+  5. tempat dan maps  -> alamat dan link Google Maps
+  6. akhir            -> upacara penutup
+  7. kontak           -> nama dan nomor WhatsApp
+  8. keluarga         -> nama keluarga di bagian bawah
 
-FOTO MENDIANG
-Letakkan foto keluarga dengan nama nenek.jpg di folder assets.
-Gunakan foto yang sudah mendapat persetujuan keluarga.
+CARA MENGHAPUS BAGIAN
+  - Upacara penutup  : ganti seluruh blok "akhir: { ... }," jadi   akhir: null,
+  - Narahubung       : tulis   kontak: [],
+  - Nama Tamil       : tulis   namaTamil: "",
+  - Kalimat wafat    : tulis   wafatKet: "",
+  - Satu orang kontak: hapus satu barisnya saja
 
-MUSIK
-Jika ingin musik latar, letakkan file audio yang boleh digunakan di assets/ambient.mp3.
-Musik hanya dimulai setelah pengunjung menekan tombol Buka Undangan.
-Jika file musik tidak tersedia, kontrol musik akan disembunyikan ketika browser mendeteksi file tidak dapat dimuat.
-
-CATATAN
-Countdown mengikuti jam acara jika eventTime diisi dengan format seperti 09.00 atau 09:00. Jika jam belum diisi, hitung mundur menuju awal tanggal acara.
-Font Google akan dimuat saat perangkat terhubung ke internet; font sistem tetap menjadi fallback.
+ATURAN PENTING
+  - Jangan hapus tanda petik " " dan koma di ujung baris
+  - Angka (hariKe) tanpa tanda petik
+  - Setelah edit: Ctrl+S, lalu refresh (F5) index.html di browser
+  - Kalau tampilan jadi kosong/rusak, biasanya ada tanda petik atau koma
+    yang terhapus di data.js. Tekan Ctrl+Z untuk mengembalikan.
